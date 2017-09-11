@@ -1,6 +1,7 @@
-From docker.cargosmart.com/os/alpine:latest
+# Build for docker image eason02/alpine-pip:latest
+From alpine:latest
 
-MAINTAINER eason.lau@cargosmart.com
+MAINTAINER Eason Lau <eason.lau02@hotmail.com>
 
 RUN apk --update add python py-pip && \
     rm -rf /var/cache/apk/*
