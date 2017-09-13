@@ -1,0 +1,38 @@
+rancher-mysql:
+   image: mysql:5.7
+   restart: always
+   container_name: rancher-mysql
+   ports:
+     - "3306:3306"
+   volumes:
+     - /var/lib/mysql:/var/lib/mysql
+   environment:
+     - MYSQL_ROOT_PASSWORD=rootrancher
+     - MYSQL_DATABASE=rancher
+     - MYSQL_USER=rancher
+     - MYSQL_PASSWORD=rancher
+   log_driver: json-file
+   log_opt:
+     max-file: '5'
+     max-size: 20m
+rancher-server:
+   image: rancher/server:v1.6.7
+   restart: always
+   container_name: rancher-server
+   links:
+     - rancher-mysql:mysql
+   ports:
+     - "8080:8080"
+   environment:
+     - CATTLE_BOOTSTRAP_REQUIRED_IMAGE=rancher/agent:v1.2.6
+     - CATTLE_AGENT_INSTANCE_IMAGE=rancher/agent-instance:v0.8.3
+     - CATTLE_DB_CATTLE_MYSQL_HOST=mysql
+     - CATTLE_DB_CATTLE_MYSQL_PORT=3306
+     - CATTLE_DB_CATTLE_MYSQL_NAME=rancher
+     - CATTLE_DB_CATTLE_USERNAME=rancher
+     - CATTLE_DB_CATTLE_PASSWORD=rancher
+   log_driver: json-file
+   log_opt:
+     max-file: '5'
+     max-size: 20m
+
