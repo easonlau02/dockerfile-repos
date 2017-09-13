@@ -1,0 +1,11 @@
+mongo-service:
+  labels:
+    io.rancher.container.pull_image: always
+  ports:
+  - "27017:27017/tcp"
+  tty: true
+  image: mongo:3.5
+  volumes:
+  - /usr/data/db:/data/db
+  stdin_open: true
+
