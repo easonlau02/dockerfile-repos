@@ -1,0 +1,20 @@
+janitor:
+  environment:
+    CLEAN_PERIOD: '3600'
+    DEBUG: '0'
+    DELAY_TIME: '900'
+    KEEP_CONTAINERS: '*:*'
+    KEEP_IMAGES: 'rancher*,meltwater*,eason02*'
+    LOOP: 'true'
+  log_driver: json-file
+  labels:
+    io.rancher.scheduler.global: 'true'
+    io.rancher.scheduler.affinity:host_label_ne: janitor.exclude=true
+  log_opt:
+    max-file: '5'
+    max-size: 5m
+  image: meltwater/docker-cleanup:1.8.0
+  volumes:
+  - /var/run/docker.sock:/var/run/docker.sock
+  - /var/lib/docker:/var/lib/docker
+  net: none
