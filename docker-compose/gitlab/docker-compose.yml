@@ -1,0 +1,53 @@
+version: "2"
+services:
+  gitlab-redis:
+    restart: always
+    image: redis:alpine
+    command:
+      - --loglevel warning
+    volumes:
+      - /var/lib/redis:/var/lib/redis:Z
+  gitlab-mysql:
+    restart: always
+    image: mysql:5.6.17
+    volumes:
+      - /home/csapp/gitlab/mysql:/var/lib/mysql:Z
+    environment:
+      - MYSQL_ROOT_PASSWORD=Password2
+  gitlab:
+    restart: always
+    image: sameersbn/gitlab:9.5.3 
+    depends_on:
+      - gitlab-redis
+      - gitlab-mysql
+    ports:
+      - "10080:80" 
+      - "10022:22" 
+    volumes:
+      - /var/git/data:/home/git/data:Z
+      - /var/log/gitlab:/var/log/gitlab:Z
+    environment:
+      - DEBUG=false
+      - DB_ADAPTER=mysql2
+      - DB_HOST=gitlab-mysql
+      - DB_PORT=3306
+      - DB_NAME=gitlabhq_production
+      - DB_USER=gitlab
+      - DB_PASS=password
+   
+      - REDIS_HOST=gitlab-redis
+      - REDIS_PORT=6379
+   
+      - GITLAB_HTTPS=false
+      - SSL_SELF_SIGNED=false
+   
+      - GITLAB_HOST=gitlab.cargosmart.org
+      - GITLAB_SSH_PORT=10022
+      - GITLAB_RELATIVE_URL_ROOT=
+      - GITLAB_SECRETS_DB_KEY_BASE=long-and-random-alphanumeric-string
+      - GITLAB_SECRETS_SECRET_KEY_BASE=long-and-random-alphanumeric-string
+      - GITLAB_SECRETS_OTP_KEY_BASE=long-and-random-alphanumeric-string
+   
+      - GITLAB_BACKUP_SCHEDULE=daily
+      - GITLAB_BACKUP_TIME=19:00
+      - GITLAB_BACKUP_EXPIRY=345600
