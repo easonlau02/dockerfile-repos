@@ -1,5 +1,6 @@
 mongodb:
   image: eason02/mongod-alpine:3.4.4
+  container_name: mongod-alpine
   volumes:
     - ./data/db:/data/db
   restart: always
