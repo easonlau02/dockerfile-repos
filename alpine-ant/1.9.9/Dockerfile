@@ -1,3 +1,4 @@
+# docker pull eason02/alpine-ant:1.9.9
 FROM java:7-alpine
 
 MAINTAINER Eason Lau <eason.lau02@hotmail.com>
