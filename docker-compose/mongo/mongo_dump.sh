@@ -1,20 +1,21 @@
 #!/bin/bash
 
-source_path_daily=/home/cs2rel/backup/daily
-source_path_weekly=/home/cs2rel/backup/weekly
+source_path_daily=/home/user/backup/daily
+source_path_weekly=/home/user/backup/weekly
 current_date=$(date +%Y%m%d)
 host=$1
 port=27017
 type=$2
 typeSensitive=$(echo $type | tr [A-Z] [a-z])
+database=db
 
 
 echo "=========================================="
 date
-echo "> csdevopscms DB Backup start ${current_date}"
+echo "> DB Backup start ${current_date}"
 
 daily() {
-        /usr/bin/mongodump --host ${host} --port ${port} --db csdevopscms --excludeCollection build_logs --gzip --archive=${source_path_daily}/${typeSensitive}.csdevopscms.mongo.${current_date}
+        /usr/bin/mongodump --host ${host} --port ${port} --db ${database} --excludeCollection build_logs --gzip --archive=${source_path_daily}/${typeSensitive}.${database}.mongo.${current_date}
         /usr/bin/mongodump --host ${host} --port ${port} --db admin --gzip --archive=${source_path_daily}/${typeSensitive}.admin.mongo.${current_date}
 }
 
@@ -45,9 +46,9 @@ start() {
 execute() {
         start
         if [ $? -eq 0 ]; then
-                echo "> csdevopscms DB backup successfully at $current_date"
+                echo "> DB backup successfully at $current_date"
         else
-                echo "> csdevopscms DB backup failure at $current_date"
+                echo "> DB backup failure at $current_date"
         fi
 }
 
