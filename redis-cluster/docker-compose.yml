@@ -1,0 +1,16 @@
+version: '2'
+services:
+  redis-master:
+    image: eason02/redis-cluster:3.2
+    container_name: redis-master
+    command: redis-server /redis.conf --port 6379
+    network_mode: host
+    volumes:
+      - ./master/data:/data
+  redis-slave:
+    image: eason02/redis-cluster:3.2
+    container_name: redis-slave
+    command: redis-server /redis.conf --port 6380
+    network_mode: host
+    volumes:
+      - ./slave/data:/data
