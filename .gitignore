@@ -1,2 +1,4 @@
 */log/
 */data
+redis-cluster/master
+redis-cluster/slave
